@@ -14,7 +14,9 @@ found = function(x) {
 
 hostname = location.hostname;
 
-s = io.connect("" + hostname + ":8001");
+show(hostname);
+
+s = io.connect("http://" + hostname + ":8001");
 
 repeat = function(t, f) {
   return setInterval(f, t);

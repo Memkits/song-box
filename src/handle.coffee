@@ -3,7 +3,8 @@ show = (x...) -> console.log.apply console, x
 found = (x) -> x.length > 0
 
 hostname = location.hostname
-s = io.connect "#{hostname}:8001"
+show hostname
+s = io.connect "http://#{hostname}:8001"
 
 repeat = (t, f) -> setInterval f, t
 delay = (t, f) -> setTimeout f, t
