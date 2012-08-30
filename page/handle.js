@@ -129,10 +129,12 @@ $(function() {
       return ls.timer = song.getTime();
     });
     if (!started) song.setTime(ls.timer + 0.2);
-    song.bind('ended', function() {
+    song.bindOnce('ended', function() {
+      show('ended');
       return next_song();
     });
-    return song.bind('err', function() {
+    return song.bindOnce('err', function() {
+      show('err');
       return next_song();
     });
   })();

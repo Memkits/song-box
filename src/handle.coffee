@@ -85,8 +85,12 @@ $ ->
     song.play()
     song.bind 'timeupdate', -> ls.timer = song.getTime()
     song.setTime (ls.timer + 0.2) unless started
-    song.bind 'ended', -> next_song()
-    song.bind 'err', -> next_song()
+    song.bindOnce 'ended', ->
+      show 'ended'
+      next_song()
+    song.bindOnce 'err', ->
+      show 'err'
+      next_song()
 
   add_song = (name) ->
     show 'add_song', name
