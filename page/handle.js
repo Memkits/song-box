@@ -190,12 +190,12 @@ $(function() {
   })();
   mute = $('#mute');
   do_mute = function() {
-    song.mute();
+    song.pause();
     mute.text('unmute');
     return ls.muted = true;
   };
   do_unmute = function() {
-    song.unmute();
+    song.play();
     mute.text('mute');
     return ls.muted = false;
   };

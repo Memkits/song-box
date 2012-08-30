@@ -17,6 +17,7 @@ io.sockets.on 'connection', (s) ->
 
   s.on 'chat', (data) ->
     io.sockets.emit 'chat', data
+    show io
     
   s.on 'save', (data) ->
     io.sockets.emit 'chat', data

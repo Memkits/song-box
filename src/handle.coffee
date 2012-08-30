@@ -132,11 +132,11 @@ $ ->
 
   mute = $ '#mute'
   do_mute = ->
-    song.mute()
+    song.pause()
     mute.text('unmute')
     ls.muted = yes
   do_unmute = ->
-    song.unmute()
+    song.play()
     mute.text('mute')
     ls.muted = no
 
