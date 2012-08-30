@@ -82,10 +82,12 @@ $ ->
     started = song.stop?
     song.stop() if started
     song = new buzz.sound "../songs/#{name}"
-    song.play().loop()
+    song.play()
     song.bind 'timeupdate', -> ls.timer = song.getTime()
     song.setTime (ls.timer + 0.2) unless started
-    
+    song.bind 'ended', -> next_song()
+    song.bind 'err', -> next_song()
+
   add_song = (name) ->
     show 'add_song', name
 
@@ -102,9 +104,7 @@ $ ->
     elem = $("#list .song:contains('#{name}')")
     if found elem
       if 'playing' in elem.attr('class').split(' ')
-        if found elem.next() then play_song elem.next().text()
-        else if found elem.prev() then play_song elem.prev().text()
-        else play_song random_song()
+        next_song elem
       elem.remove()
 
   unmark_song = (name) ->
@@ -114,7 +114,7 @@ $ ->
   random_song = ->
     n = Math.floor (ls.all.length * Math.random())
     show 'random_song', ls.all[n]
-    ls.all[n]
+    play_song ls.all[n]
 
   record = ->
     ls.record = []
@@ -147,3 +147,54 @@ $ ->
 
   $('#up').click -> [1..10].forEach -> song.increaseVolume()
   $('#down').click -> [1..10].forEach -> song.decreaseVolume()
+
+  next_song = (elem) ->
+    show 'next_song'
+    unless elem? then elem = $ '#list .playing'
+    if found elem
+      if found elem.next() then play_song elem.next().text()
+      else if $('#list .song').length > 1
+        play_song $('#list .song').first().text()
+      else random_song()
+
+  name = $('#name').val('guest')
+  name.bind 'input', ->
+    if name.val().trim() is '' then name.val 'guest'
+    else name.val name.val().trim()
+
+  text = $('#text')
+  make = -> new Date().getTime().toString()
+  mark = make()
+  text.bind 'input', ->
+    data =
+      name: name.val()
+      text: text.val()
+      mark: mark
+    s.emit 'chat', data
+
+  text.keydown (e) ->
+    if e.keyCode is 13
+      data =
+        name: name.val()
+        text: text.val()
+        mark: mark
+      s.emit 'save', data
+      mark = make()
+      text.val('')
+      chat.scrollTop (chat.scrollTop() + 24)
+
+  s.on 'start', (list) -> list.forEach write
+  s.on 'chat', (data) -> write data
+
+  chat = $ '#chat'
+  write = (data) ->
+    show data
+    elem = $ "##{String data.mark}"
+    show  elem
+    if found elem then elem.text data.text
+    else $('#chat').append (unit data)
+
+  unit = (data) ->
+    "<div class='post'><div class='name'>#{data.name}
+      </div><div id='#{data.mark}' class='text'>
+    #{data.text}</div></div>"

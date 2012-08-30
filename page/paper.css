@@ -41,6 +41,50 @@ body {
   width: 60%;
   background: #f2f2f2;
   float: left;
+  position: relative;
+  padding: 100px 0px 200px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  white-space: nowrap;
+}
+#box #chat #input {
+  position: fixed;
+  bottom: 0px;
+}
+#box #chat #input input {
+  border: none;
+  outline: none;
+  display: inline-block;
+  letter-spacing: 0px;
+}
+#box #chat #input #name {
+  width: 90px;
+  margin-right: -5px;
+}
+#box #chat #input #text {
+  width: 510px;
+  box-shadow: 0px 0px 4px #808080;
+}
+#box #chat .post {
+  font-size: 13px;
+  font-family: Ubuntu;
+  line-height: 20px;
+  height: 24px;
+}
+#box #chat .post:nth-child(2n) {
+  background: #dedede;
+}
+#box #chat .post .name,
+#box #chat .post .text {
+  display: inline-block;
+  padding: 1px 2px;
+  overflow: hidden;
+}
+#box #chat .post .name {
+  width: 90px;
+}
+#box #chat .post .text {
+  width: 510px;
 }
 #box #list {
   width: 40%;

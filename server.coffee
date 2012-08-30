@@ -1,6 +1,11 @@
 
 show = console.log
 
+store = []
+push = (data) ->
+  store.push data
+  if store.length > 40 then store.shift()
+
 io = require('socket.io').listen 8001, origins: '*:*'
 io.set 'log level', 1
 io.sockets.on 'connection', (s) ->
@@ -9,6 +14,15 @@ io.sockets.on 'connection', (s) ->
   s.on 'dataURL', (data) -> save upname, data
   show 'connection'
   song_list s
+
+  s.on 'chat', (data) ->
+    io.sockets.emit 'chat', data
+    
+  s.on 'save', (data) ->
+    io.sockets.emit 'chat', data
+    push data
+
+  s.emit 'start', store
 
 so = (a, b) -> yes
 

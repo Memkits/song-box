@@ -37,7 +37,7 @@ song_tag = function(name) {
 };
 
 $(function() {
-  var add_song, buzz_song, choice, do_mute, do_unmute, init, mark_song, mute, place, play_song, random_song, record, rm_song, song_list, unmark_song;
+  var add_song, buzz_song, chat, choice, do_mute, do_unmute, init, make, mark, mark_song, mute, name, next_song, place, play_song, random_song, record, rm_song, song_list, text, unit, unmark_song, write;
   choice = $('#choice');
   place = $('#place');
   song_list = $('#list');
@@ -124,11 +124,17 @@ $(function() {
     started = song.stop != null;
     if (started) song.stop();
     song = new buzz.sound("../songs/" + name);
-    song.play().loop();
+    song.play();
     song.bind('timeupdate', function() {
       return ls.timer = song.getTime();
     });
-    if (!started) return song.setTime(ls.timer + 0.2);
+    if (!started) song.setTime(ls.timer + 0.2);
+    song.bind('ended', function() {
+      return next_song();
+    });
+    return song.bind('err', function() {
+      return next_song();
+    });
   })();
   add_song = function(name) {
     show('add_song', name);
@@ -147,13 +153,7 @@ $(function() {
     elem = $("#list .song:contains('" + name + "')");
     if (found(elem)) {
       if (__indexOf.call(elem.attr('class').split(' '), 'playing') >= 0) {
-        if (found(elem.next())) {
-          play_song(elem.next().text());
-        } else if (found(elem.prev())) {
-          play_song(elem.prev().text());
-        } else {
-          play_song(random_song());
-        }
+        next_song(elem);
       }
       return elem.remove();
     }
@@ -166,7 +166,7 @@ $(function() {
     var n;
     n = Math.floor(ls.all.length * Math.random());
     show('random_song', ls.all[n]);
-    return ls.all[n];
+    return play_song(ls.all[n]);
   };
   record = function() {
     var item, name, _i, _len, _ref;
@@ -213,9 +213,79 @@ $(function() {
       return song.increaseVolume();
     });
   });
-  return $('#down').click(function() {
+  $('#down').click(function() {
     return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].forEach(function() {
       return song.decreaseVolume();
     });
   });
+  next_song = function(elem) {
+    show('next_song');
+    if (elem == null) elem = $('#list .playing');
+    if (found(elem)) {
+      if (found(elem.next())) {
+        return play_song(elem.next().text());
+      } else if ($('#list .song').length > 1) {
+        return play_song($('#list .song').first().text());
+      } else {
+        return random_song();
+      }
+    }
+  };
+  name = $('#name').val('guest');
+  name.bind('input', function() {
+    if (name.val().trim() === '') {
+      return name.val('guest');
+    } else {
+      return name.val(name.val().trim());
+    }
+  });
+  text = $('#text');
+  make = function() {
+    return new Date().getTime().toString();
+  };
+  mark = make();
+  text.bind('input', function() {
+    var data;
+    data = {
+      name: name.val(),
+      text: text.val(),
+      mark: mark
+    };
+    return s.emit('chat', data);
+  });
+  text.keydown(function(e) {
+    var data;
+    if (e.keyCode === 13) {
+      data = {
+        name: name.val(),
+        text: text.val(),
+        mark: mark
+      };
+      s.emit('save', data);
+      mark = make();
+      text.val('');
+      return chat.scrollTop(chat.scrollTop() + 24);
+    }
+  });
+  s.on('start', function(list) {
+    return list.forEach(write);
+  });
+  s.on('chat', function(data) {
+    return write(data);
+  });
+  chat = $('#chat');
+  write = function(data) {
+    var elem;
+    show(data);
+    elem = $("#" + (String(data.mark)));
+    show(elem);
+    if (found(elem)) {
+      return elem.text(data.text);
+    } else {
+      return $('#chat').append(unit(data));
+    }
+  };
+  return unit = function(data) {
+    return "<div class='post'><div class='name'>" + data.name + "      </div><div id='" + data.mark + "' class='text'>    " + data.text + "</div></div>";
+  };
 });
