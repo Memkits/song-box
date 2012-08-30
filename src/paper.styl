@@ -1,0 +1,76 @@
+
+*
+  box-sizing border-box
+
+body
+  margin 0px
+  padding 0px
+
+#upload
+  position fixed
+  right 0px
+  bottom 0px
+  background hsl(240,90,90)
+  // padding 4px 8px
+  font-family Ubuntu
+  border-radius 10px 0px 0px 0px
+  width 90px
+  overflow hidden
+  padding 0px 16px
+  
+  #file
+    opacity 0.1
+    position absolute
+    left 0px
+    float left
+
+#box
+  height 100%
+  background hsl(0,90,96)
+  margin 0px auto
+  padding 0px
+  width 1000px
+  
+  #chat, #list
+    height 100%
+    display inline-block
+
+  #chat
+    width 60%
+    background blue
+    float left
+
+  #list
+    width 40%
+    background red
+    float left
+    position relative
+
+    #lunch
+      background red
+
+#lunch, #close
+  position absolute
+  right -40px
+  top 100px
+  width 40px
+  height 40px
+  border-radius 0px 16px 10px 0px
+
+#cover
+  width 100%
+  height 100%
+  position absolute
+  top 0px
+  background hsla(0,100,100,0.7)
+  display none
+  
+  #choice
+    width 0px
+    height 100%
+    background blue
+    margin 0px auto
+    position relative
+
+    #close
+      background blue

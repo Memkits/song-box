@@ -1,0 +1,77 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0px;
+  padding: 0px;
+}
+#upload {
+  position: fixed;
+  right: 0px;
+  bottom: 0px;
+  background: #cfcffc;
+  font-family: Ubuntu;
+  border-radius: 10px 0px 0px 0px;
+  width: 90px;
+  overflow: hidden;
+  padding: 0px 16px;
+}
+#upload #file {
+  opacity: 0.1;
+  position: absolute;
+  left: 0px;
+  float: left;
+}
+#box {
+  height: 100%;
+  background: #feecec;
+  margin: 0px auto;
+  padding: 0px;
+  width: 1000px;
+}
+#box #chat,
+#box #list {
+  height: 100%;
+  display: inline-block;
+}
+#box #chat {
+  width: 60%;
+  background: #00f;
+  float: left;
+}
+#box #list {
+  width: 40%;
+  background: #f00;
+  float: left;
+  position: relative;
+}
+#box #list #lunch {
+  background: #f00;
+}
+#lunch,
+#close {
+  position: absolute;
+  right: -40px;
+  top: 100px;
+  width: 40px;
+  height: 40px;
+  border-radius: 0px 16px 10px 0px;
+}
+#cover {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0px;
+  background: rgba(255,255,255,0.7);
+  display: none;
+}
+#cover #choice {
+  width: 0px;
+  height: 100%;
+  background: #00f;
+  margin: 0px auto;
+  position: relative;
+}
+#cover #choice #close {
+  background: #00f;
+}
