@@ -4,26 +4,26 @@ show = console.log
 io = require('socket.io').listen 8001, origins: '*:*'
 io.set 'log level', 1
 io.sockets.on 'connection', (s) ->
-  s.on 'dataURL', (file) ->
-    save file
+  upname = ''
+  s.on 'upname', (str) -> upname = str
+  s.on 'dataURL', (data) -> save upname, data
   show 'connection'
+  song_list s
 
 so = (a, b) -> yes
 
-# handler = (req, res) ->
-#   show req.url
-#   if req.url is '/song'
-#     data = ''
-#     req.on 'data', (chunk) -> data += chunk
-#     req.on 'end', -> so (save data), (res.end 'end')
-#   else
-#     res.end 'file server'
-# # require('http').createServer(handler).listen 8002
-
 fs = require 'fs'
-save = (data) ->
+save = (upname, data) ->
+  show 'upname', upname
+  upname = 'songs/' + upname
   data =  data.replace /^\w+\:\w+\/\w+\;base64\,/, ''
+  show data[..20]
   dataBuffer = new Buffer data, 'base64'
-  fs.writeFile 'a.zip', dataBuffer, (err) ->
-    show err
-    show 'end'
+  fs.writeFile upname, dataBuffer, (err) ->
+    if err? then show err else
+      song_list io.sockets
+      show 'end'
+
+song_list = (s) ->
+  fs.readdir 'songs', (err, list) ->
+    s.emit 'list', list
