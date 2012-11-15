@@ -1,160 +1,135 @@
 * {
   box-sizing: border-box;
 }
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  width: 4px;
+  background: #fee7e7;
+}
+::-webkit-scrollbar-thumb {
+  background: #e6b3b3;
+  border-radius: 2px;
+}
+@font-face {
+  font-family: chela;
+  src: url("../font/chela.woff") format('woff');
+}
 body {
   margin: 0px;
-  padding: 0px;
-  background: #f1fdf1;
-}
-#upload {
-  position: fixed;
-  right: 0px;
-  bottom: 0px;
-  background: #cfcffc;
-  font-family: Ubuntu;
-  border-radius: 10px 0px 0px 0px;
-  width: 90px;
-  overflow: hidden;
-  padding: 0px 16px;
-  z-index: 4;
-}
-#upload #file {
-  opacity: 0.1;
   position: absolute;
-  left: 0px;
-  float: left;
-}
-#box {
   height: 100%;
-  background: #feecec;
+  width: 100%;
+  min-height: 400px;
+  font-family: chela;
+  font-size: 20px;
+  color: #fff;
+}
+#full {
+  width: 1100px;
+  height: 100%;
   margin: 0px auto;
-  padding: 0px;
-  width: 1000px;
-  position: relative;
+  background: #e6e6e6;
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
 }
-#box #chat,
-#box #list {
+#menu,
+#my {
+  width: 50%;
   height: 100%;
-  display: inline-block;
-}
-#box #chat {
-  width: 60%;
-  background: #f2f2f2;
-  float: left;
-  position: relative;
-  padding: 100px 0px 200px;
   overflow-y: scroll;
   overflow-x: hidden;
+}
+#menu {
+  padding: 100px 0px 300px;
+  background: #ededed;
+}
+#my {
+  width: 50%;
+  height: 100%;
+}
+.song-name {
+  background: #a43737;
+  margin: 4px 0px;
+  padding: 4px 10px;
+  box-shadow: 0px 0px 10px #ccc;
+}
+.song-name:hover {
+  background: #c66;
+}
+#player {
+  height: 100px;
+  width: 100%;
+}
+#name {
+  height: 30px;
+  background: #eddede;
+  box-shadow: 0px 0px 10px #999;
+  margin: 10px 0px;
+}
+#step {
+  padding: 2px 0px;
+  background: #47331f;
+  overflow-x: visible;
+  height: 100%;
   white-space: nowrap;
 }
-#box #chat #input {
-  position: fixed;
-  bottom: 0px;
+#words {
+  padding: 0px 10px;
 }
-#box #chat #input input {
-  border: none;
-  outline: none;
+#control {
+  padding: 0px 10px;
+}
+#control span {
+  background: #c7d1c9;
+  margin-right: 10px;
+  padding: 2px 8px;
   display: inline-block;
-  letter-spacing: 0px;
+  text-align: center;
+  text-transform: capitalize;
+  cursor: pointer;
+  border-radius: 1px;
+  width: 60px;
 }
-#box #chat #input #name {
-  width: 90px;
-  margin-right: -5px;
+#control .pressed {
+  background: #ccc;
 }
-#box #chat #input #text {
-  width: 510px;
-  box-shadow: 0px 0px 4px #808080;
+#control .released {
+  background: #4d4d4d;
 }
-#box #chat .post {
-  font-size: 13px;
-  font-family: Ubuntu;
-  line-height: 20px;
-  height: 24px;
-}
-#box #chat .post:nth-child(2n) {
-  background: #dedede;
-}
-#box #chat .post .name,
-#box #chat .post .text {
+#control #volume {
   display: inline-block;
-  padding: 1px 2px;
-  overflow: hidden;
+  margin-left: 20px;
 }
-#box #chat .post .name {
-  width: 90px;
-}
-#box #chat .post .text {
-  width: 510px;
-}
-#box #list {
-  width: 40%;
-  background: #ebebe0;
-  float: left;
-  position: relative;
-}
-#box #lunch {
-  background: #ebebe0;
-}
-#lunch,
-#close,
-#up,
-#down,
-#mute {
-  position: absolute;
-  right: -40px;
-  top: 100px;
+#control #volume span {
+  background: #999;
+  font-size: 15px;
   width: 40px;
-  height: 40px;
-  border-radius: 0px 16px 10px 0px;
-  color: #fff;
-  font-family: Ubuntu;
-  padding: 10px 6px;
-  text-shadow: 0px 0px 10px #808080;
-  overflow: hidden;
-  cursor: pointer;
 }
-#up {
-  top: 160px;
-  background: #ebe0e0;
-}
-#mute {
-  top: 200px;
-  background: #f99;
-}
-#down {
-  top: 240px;
-  background: #baabab;
-}
-#cover {
+#like {
+  min-height: 300px;
+height
   width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0px;
-  background: rgba(255,255,255,0.7);
+  padding: 100px 0px 200px;
 }
-#cover #choice {
-  height: 100%;
-  background: #fadfd1;
-  margin: 0px auto;
+.good-song {
+  background: #7a7ab8;
+  height: 30px;
+  padding: 2px 10px;
+  margin: 4px 0px;
+  box-shadow: 0px 0px 20px #b3b3b3;
 }
-#cover #place {
-  width: 600px;
-  margin: 0px auto;
-  position: relative;
-  height: 0px;
-}
-#cover #place #close {
-  background: #fadfd1;
-}
-.song {
-  margin: 0px;
-  padding: 10px;
+.good-song .icon {
+  float: right;
+  margin: 0px 6px;
+  color: #ccc;
   cursor: pointer;
 }
-.song:hover {
-  text-shadow: 0px 0px 3px #808080;
+.good-song .icon:hover {
+  color: #fff;
 }
-.queue,
-.playing {
-  background: rgba(158,158,250,0.4);
+#playing {
+  background: #a3a3f5;
 }

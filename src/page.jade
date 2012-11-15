@@ -1,26 +1,30 @@
 
-head
-  script(src='http://192.168.1.117:8072/doodle.js')
-  script(src='http://cdn.zjut.com/jquery/1.7.1.js')
-  script(src='../node_modules/socket.io/node_modules/socket.io-client/dist/socket.io.js')
-  script(src='../lib/buzz.js')
-  script(src='handle.js')
-  link(rel='stylesheet',href='paper.css')
-body
-  #upload upload
-    input(id='file', type='file', multiple='', value='upload')
-  #banner
-  #box
-    #chat
-      #input
-        input#name(maxlength='20')
-        input#text(maxlength='80')
-    #list
-    #lunch lunch
-    #up +
-    #mute mute
-    #down -
-  #cover
-    #place
-      #close close
-    #choice
+doctype 5
+
+html
+  head
+    meta(charset='utf-8')
+    script(src='http://192.168.1.101:7777/doodle.js')
+    link(rel='stylesheet',href='paper.css')
+    script(src='../../live-tmpl/page/tmpl.js')
+    script(src='handle.js')
+    title mp3
+  body
+    #full
+      #menu
+      #my
+        #player
+          #name
+            #step
+              #words demo
+          #control
+            span#toggle.released play
+            span#loop.released loop
+            #volume
+              span#now 100
+              span#dec81 -81
+              span#inc27 +27
+              span#dec9 -9
+              span#inc3 +3
+
+        #like

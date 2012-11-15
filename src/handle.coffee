@@ -1,205 +1,150 @@
 
-show = (x...) -> console.log.apply console, x
-found = (x) -> x.length > 0
-
-hostname = location.hostname
-show hostname
-s = io.connect "http://#{hostname}:8001"
-
-repeat = (t, f) -> setInterval f, t
-delay = (t, f) -> setTimeout f, t
-
-ls = JSON.parse (localStorage.ls or '{}')
-repeat 100, -> localStorage.ls = JSON.stringify ls
+show = (args...) -> console.log.apply console, args
 
 song = {}
+list = []
+set = (key, value) -> localStorage.setItem key, value
+get = (key) -> localStorage.getItem key
 
-song_tag = (name) -> "<p class='song'>#{name}</p>"
+query = (str) -> document.querySelector str
+tag = (id) -> document.getElementById id
 
-$ ->
+play = (name) ->
+  if song.src?
+    unless song.paused
+      song.pause()
+  filename = "../mp3/dir/#{name}"
+  set 'song', name
+  (tag 'words').innerText = name
+  song = new Audio filename
+  song.play()
 
-  choice = $ '#choice'
-  place = $ '#place'
-  song_list = $ '#list'
+  song.addEventListener 'loadedmetadata', ->
+    # last_time = get 'time'
+    # show 'time', time
+    # if last_time? then song.currentTime = Number (get 'time')
+    song.addEventListener 'timeupdate', (a) ->
+      # set 'time', (String song.currentTime)
+      # show (get 'time')
+      percent = song.currentTime / song.duration * 100
+      (tag 'step').style.width = "#{percent}%"
 
-  $('#file').bind 'change', (e) ->
-    files = e.target.files
-    s.emit 'upname', files[0].name
-    reader = new FileReader()
-    reader.onload = (file) ->
-      res = file.target.result
-      show 'sending'
-      s.emit 'dataURL', res
-    reader.readAsDataURL files[0]
+  song.addEventListener 'play', ->
+    (tag 'toggle').className = 'pressed'
 
-  $('#lunch').click ->
-    $('#cover').fadeIn()
-    choice.animate width: '600px'
-    place.animate width: '600px'
-    place.css overflow: 'visible'
+  song.addEventListener 'pause', ->
+    (tag 'toggle').className = 'released'
 
-  $('#lunch').click()
-  delay 100, -> $('#close').click()
-
-  $('#close').click ->
-    choice.animate width: '0px'
-    place.animate width: '0px'
-    $('#cover').fadeOut()
-    place.css overflow: 'hidden'
-
-  s.on 'list', (list) ->
-    show 'list: ', list
-    ls.all = list
-
-    choice.empty()
-    list.forEach (name) -> choice.append (song_tag name)
-    $('#cover .song').click (e) ->
-      elem = $(e.target)
-      name = elem.text()
-      classes = elem.attr('class').split(' ')
-      if 'queue' in classes
-        rm_song name
-        unmark_song name
+  song.addEventListener 'ended', ->
+    unless (tag 'loop').className is 'pressed'
+      elem  = query '#playing'
+      next_elem = elem.nextElementSibling
+      show elem, next_elem
+      if next_elem?
+        next_elem.click()
       else
-        add_song name
-        mark_song name
-        if $('#list .song').length is 1 then play_song name
-      record()
+        (tag 'like').children[0].click()
 
-    ls.record.forEach (name) ->
-      elem = $("#choice .song:contains('#{name}')")
-      elem.addClass 'queue'
+list_remove = (list_a, item_a) ->
+  list_b = []
+  list_a.forEach (item_b) ->
+    if item_b isnt item_a
+      list_b.push item_b
+  list_b
 
-  play_song = (name) ->
-    show 'play_song', name
-    ls.play_song = name
-    $('.playing').removeClass 'playing'
-    $("#list .song:contains('#{name}')").addClass 'playing'
-    ls.playing = name
-    buzz_song()
+choose = (name) ->
+  show 'name...', name, list
+  unless name in list
+    json =
+      '.good-song':
+        'span': name
+        'span.icon.up': 'up'
+        'span.icon.rm': 'rm'
+    (tag 'like').insertAdjacentHTML 'beforeend', (tmpl json)
+    list.push name
+    set 'list', (JSON.stringify list)
 
-  do buzz_song = ->
-    name = ls.playing
-    started = song.stop?
-    song.stop() if started
-    song = new buzz.sound "../songs/#{name}"
-    song.play()
-    song.bind 'timeupdate', -> ls.timer = song.getTime()
-    song.setTime (ls.timer + 0.2) unless started
-    song.bindOnce 'ended', ->
-      show 'ended'
-      next_song()
-    song.bindOnce 'err', ->
-      show 'err'
-      next_song()
+    elem = query '#like>div:last-child'
+    elem.onclick = ->
+      play name
+      playing = query '#playing'
+      if playing? then playing.id = ''
+      elem.id = 'playing'
 
-  add_song = (name) ->
-    show 'add_song', name
+    parent = elem.parentElement
 
-    $('#list').append (song_tag name)
-    $("#list .song:contains('#{name}')").click -> play_song name
+    rm = elem.querySelector '.rm'
+    rm.onclick = (event) ->
+      parent.removeChild elem
+      list = list_remove list, name
+      set 'list', (JSON.stringify list)
+      event.cancelBubble = yes
 
-  mark_song = (name) ->
-    show 'mark_song', name
-    $("#cover .song:contains('#{name}')").addClass 'queue'
+    up = elem.querySelector '.up'
+    up.onclick = (event) ->
+      prev = elem.previousElementSibling
+      if prev
+        parent.removeChild prev
+        elem.insertAdjacentElement 'afterend', prev
+      event.cancelBubble = yes
 
-  rm_song = (name) ->
-    show 'rm_song', name
+window.onload = ->
 
-    elem = $("#list .song:contains('#{name}')")
-    if found elem
-      if 'playing' in elem.attr('class').split(' ')
-        next_song elem
-      elem.remove()
+  last_list = get 'list'
+  if last_list?
+    (JSON.parse last_list).forEach choose
 
-  unmark_song = (name) ->
-    show 'unmark_song', name
-    $("#cover :contains('#{name}')").removeClass 'queue'
+  req = new XMLHttpRequest
+  req.open 'get', '../mp3/list.json', yes
+  req.send()
+  req.onload = (obj) ->
+    (JSON.parse obj.target.response).forEach (name) ->
+      html = tmpl ".song-name": name
+      (tag 'menu').insertAdjacentHTML 'beforeend', html
+      (query '#menu>div:last-child').onclick = -> choose name
 
-  random_song = ->
-    n = Math.floor (ls.all.length * Math.random())
-    show 'random_song', ls.all[n]
-    play_song ls.all[n]
+    # last_song = get 'song'
+    # if last_song then play last_song else play list[2]
+    (tag 'like').children[0].click()
 
-  record = ->
-    ls.record = []
-    for item in $('#list .song')
-      unless item in ls.record
-        name = $(item).text()
-        if name in ls.all
-          ls.record.push name
-    show 'record', ls.record
+  (tag 'toggle').onclick = ->
+    if (tag 'toggle').className is 'pressed'
+      song.pause()
+    else
+      song.play()
 
-  do init = ->
-    show 'record', ls.record
-    ls.record.forEach (name) -> add_song name
-    $("#list .song:contains('#{ls.playing}')").addClass 'playing'
+  (tag 'loop').onclick = ->
+    if (tag 'loop').className is 'pressed'
+      song.loop = off
+      (tag 'loop').className = 'released'
+    else
+      song.loop = on
+      (tag 'loop').className = 'pressed'
 
-  mute = $ '#mute'
-  do_mute = ->
-    song.pause()
-    mute.text('unmute')
-    ls.muted = yes
-  do_unmute = ->
-    song.play()
-    mute.text('mute')
-    ls.muted = no
+  (tag 'dec81').onclick = ->
+    vol = Number (tag 'now').innerText
+    vol -= 81
+    if vol < 0 then vol = 0
+    (tag 'now').innerText = vol
+    song.volume = vol / 100
 
-  mute.click ->
-    if mute.text() is 'mute' then do_mute() else do_unmute()
-  show ls.muted
-  if ls.muted then do_mute()
+  (tag 'inc27').onclick = ->
+    vol = Number (tag 'now').innerText
+    vol += 27
+    if vol > 100 then vol = 100
+    (tag 'now').innerText = vol
+    song.volume = vol / 100
 
-  $('#up').click -> [1..10].forEach -> song.increaseVolume()
-  $('#down').click -> [1..10].forEach -> song.decreaseVolume()
+  (tag 'dec9').onclick = ->
+    vol = Number (tag 'now').innerText
+    vol -= 9
+    if vol < 0 then vol = 0
+    (tag 'now').innerText = vol
+    song.volume = vol / 100
 
-  next_song = (elem) ->
-    show 'next_song'
-    unless elem? then elem = $ '#list .playing'
-    if found elem
-      if found elem.next() then play_song elem.next().text()
-      else if $('#list .song').length > 1
-        play_song $('#list .song').first().text()
-      else random_song()
-
-  name = $('#name').val('guest')
-  name.bind 'input', ->
-    if name.val().trim() is '' then name.val 'guest'
-    else name.val name.val().trim()
-
-  text = $('#text')
-  make = -> new Date().getTime().toString()
-  mark = make()
-  text.bind 'input', ->
-    data =
-      name: name.val()
-      text: text.val()
-      mark: mark
-    s.emit 'chat', data
-
-  text.keydown (e) ->
-    if e.keyCode is 13
-      data =
-        name: name.val()
-        text: text.val()
-        mark: mark
-      s.emit 'save', data
-      mark = make()
-      text.val('')
-      chat.scrollTop (chat.scrollTop() + 24)
-
-  s.on 'start', (list) -> list.forEach write
-  s.on 'chat', (data) -> write data
-
-  chat = $ '#chat'
-  write = (data) ->
-    show data
-    elem = $ "##{String data.mark}"
-    show  elem
-    if found elem then elem.text data.text
-    else $('#chat').append (unit data)
-
-  unit = (data) ->
-    "<div class='post'><div class='name'>#{data.name}
-      </div><div id='#{data.mark}' class='text'>
-    #{data.text}</div></div>"
+  (tag 'inc3').onclick = ->
+    vol = Number (tag 'now').innerText
+    vol += 3
+    if vol > 100 then vol = 100
+    (tag 'now').innerText = vol
+    song.volume = vol / 100
