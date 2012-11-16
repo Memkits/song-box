@@ -100,9 +100,19 @@ body {
 #control .released {
   background: #4d4d4d;
 }
+#control #now {
+  background: rgba(0,0,0,0);
+  color: #6b422e;
+  font-size: 30px;
+  padding: 0px;
+  line-height: 28px;
+  vertical-align: bottom;
+  margin: 0px 0px 0px 20px;
+  padding-right: 0px;
+  width: 40px;
+}
 #control #volume {
   display: inline-block;
-  margin-left: 20px;
 }
 #control #volume span {
   background: #999;
