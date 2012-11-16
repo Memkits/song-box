@@ -88,6 +88,15 @@ choose = (name) ->
         elem.insertAdjacentElement 'afterend', prev
       event.cancelBubble = yes
 
+set_vol = (num) ->
+  vol = Number (tag 'now').innerText
+  vol += num
+  if vol < 0 then vol = 0
+  else if vol > 100 then vol = 100
+  (tag 'now').innerText = vol
+  song.volume = vol / 100
+  set 'vol', (String vol)
+
 window.onload = ->
 
   last_list = get 'list'
@@ -108,6 +117,14 @@ window.onload = ->
     first = (tag 'like').children[0]
     if first? then first.click()
 
+    last_vol = get 'vol'
+    # show 'last_vol', last_vol
+    if last_vol?
+      vol_str = Number last_vol
+      # show vol_str, 'vol'
+      (tag 'now').innerText = vol_str
+      set_vol +0
+
   (tag 'toggle').onclick = ->
     if (tag 'toggle').className is 'pressed'
       song.pause()
@@ -122,33 +139,10 @@ window.onload = ->
       song.loop = on
       (tag 'loop').className = 'pressed'
 
-  (tag 'dec81').onclick = ->
-    vol = Number (tag 'now').innerText
-    vol -= 81
-    if vol < 0 then vol = 0
-    (tag 'now').innerText = vol
-    song.volume = vol / 100
-
-  (tag 'inc27').onclick = ->
-    vol = Number (tag 'now').innerText
-    vol += 27
-    if vol > 100 then vol = 100
-    (tag 'now').innerText = vol
-    song.volume = vol / 100
-
-  (tag 'dec9').onclick = ->
-    vol = Number (tag 'now').innerText
-    vol -= 9
-    if vol < 0 then vol = 0
-    (tag 'now').innerText = vol
-    song.volume = vol / 100
-
-  (tag 'inc3').onclick = ->
-    vol = Number (tag 'now').innerText
-    vol += 3
-    if vol > 100 then vol = 100
-    (tag 'now').innerText = vol
-    song.volume = vol / 100
+  (tag 'dec81').onclick = -> set_vol -81
+  (tag 'inc27').onclick = -> set_vol +27
+  (tag 'dec9').onclick = -> set_vol -9
+  (tag 'inc3').onclick = -> set_vol +3
 
   document.body.onkeypress = (event) ->
     show event.keyCode
