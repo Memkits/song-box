@@ -197,7 +197,7 @@ window.onload = function() {
     (tag('now')).innerText = vol;
     return song.volume = vol / 100;
   };
-  return (tag('inc3')).onclick = function() {
+  (tag('inc3')).onclick = function() {
     var vol;
     vol = Number((tag('now')).innerText);
     vol += 3;
@@ -206,5 +206,11 @@ window.onload = function() {
     }
     (tag('now')).innerText = vol;
     return song.volume = vol / 100;
+  };
+  return document.body.onkeypress = function(event) {
+    show(event.keyCode);
+    if (event.keyCode === 32) {
+      return (tag('toggle')).click();
+    }
   };
 };

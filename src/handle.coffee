@@ -149,3 +149,8 @@ window.onload = ->
     if vol > 100 then vol = 100
     (tag 'now').innerText = vol
     song.volume = vol / 100
+
+  document.body.onkeypress = (event) ->
+    show event.keyCode
+    if event.keyCode is 32
+      (tag 'toggle').click()
