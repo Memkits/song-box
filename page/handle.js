@@ -135,6 +135,7 @@ window.onload = function() {
   req.open('get', '../mp3/list.json', true);
   req.send();
   req.onload = function(obj) {
+    var first;
     (JSON.parse(obj.target.response)).forEach(function(name) {
       var html;
       html = tmpl({
@@ -145,7 +146,10 @@ window.onload = function() {
         return choose(name);
       };
     });
-    return (tag('like')).children[0].click();
+    first = (tag('like')).children[0];
+    if (first != null) {
+      return first.click();
+    }
   };
   (tag('toggle')).onclick = function() {
     if ((tag('toggle')).className === 'pressed') {

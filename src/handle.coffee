@@ -105,7 +105,8 @@ window.onload = ->
 
     # last_song = get 'song'
     # if last_song then play last_song else play list[2]
-    (tag 'like').children[0].click()
+    first = (tag 'like').children[0]
+    if first? then first.click()
 
   (tag 'toggle').onclick = ->
     if (tag 'toggle').className is 'pressed'
