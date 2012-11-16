@@ -1,5 +1,3 @@
 
 node_modules/*
-songs/*
-lib/*
-mp3/*
+mp3/dir/*
