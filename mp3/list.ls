@@ -22,5 +22,5 @@ list.forEach (file) ->
       if item.match /\.mp3$/
         whole-list.push (path.join file, item)
 
-json = JSON.stringify whole-list.sort!, null, 2
+json = JSON.stringify whole-list.sort!.reverse!, null, 2
 fs.write-file name, json
