@@ -132,6 +132,9 @@ height
   margin: 4px 0px;
   box-shadow: 0px 0px 20px #b3b3b3;
 }
+.good-song:hover {
+  background: #8c8cd9;
+}
 .good-song .icon {
   float: right;
   margin: 0px 6px;

@@ -9,6 +9,8 @@ get = (key) -> localStorage.getItem key
 query = (str) -> document.querySelector str
 tag = (id) -> document.getElementById id
 
+loop_it = false
+
 play = (name) ->
   if song.src?
     unless song.paused
@@ -18,6 +20,7 @@ play = (name) ->
   (tag 'words').innerText = name
   song = new Audio filename
   song.play()
+  if loop_it then song.loop = on
 
   song.addEventListener 'loadedmetadata', ->
     # last_time = get 'time'
@@ -129,14 +132,17 @@ window.onload = ->
     if (tag 'toggle').className is 'pressed'
       song.pause()
     else
-      song.play()
+      if song? and song.play? then song.play()
+      else (query "#like .good-song:first-child").click()
 
   (tag 'loop').onclick = ->
     if (tag 'loop').className is 'pressed'
       song.loop = off
+      loop_it = off
       (tag 'loop').className = 'released'
     else
       song.loop = on
+      loop_it = on
       (tag 'loop').className = 'pressed'
 
   (tag 'dec81').onclick = -> set_vol -81
