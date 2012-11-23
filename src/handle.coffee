@@ -133,7 +133,9 @@ window.onload = ->
       song.pause()
     else
       if song? and song.play? then song.play()
-      else (query "#like .good-song:first-child").click()
+      else
+        elem =query "#like .good-song:first-child"
+        if elem? then elem.click()
 
   (tag 'loop').onclick = ->
     if (tag 'loop').className is 'pressed'
@@ -154,3 +156,4 @@ window.onload = ->
     show event.keyCode
     if event.keyCode is 32
       (tag 'toggle').click()
+      event.preventDefault()

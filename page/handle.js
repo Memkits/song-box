@@ -177,13 +177,17 @@ window.onload = function() {
     }
   };
   (tag('toggle')).onclick = function() {
+    var elem;
     if ((tag('toggle')).className === 'pressed') {
       return song.pause();
     } else {
       if ((song != null) && (song.play != null)) {
         return song.play();
       } else {
-        return (query("#like .good-song:first-child")).click();
+        elem = query("#like .good-song:first-child");
+        if (elem != null) {
+          return elem.click();
+        }
       }
     }
   };
@@ -213,7 +217,8 @@ window.onload = function() {
   return document.body.onkeypress = function(event) {
     show(event.keyCode);
     if (event.keyCode === 32) {
-      return (tag('toggle')).click();
+      (tag('toggle')).click();
+      return event.preventDefault();
     }
   };
 };
