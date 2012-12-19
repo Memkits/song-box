@@ -20,6 +20,7 @@ play = (name) ->
   (tag 'words').innerText = name
   song = new Audio filename
   song.play()
+  increase_vol 0
   if loop_it then song.loop = on
 
   song.addEventListener 'loadedmetadata', ->
@@ -132,7 +133,9 @@ window.onload = ->
     if (tag 'toggle').className is 'pressed'
       song.pause()
     else
-      if song? and song.play? then song.play()
+      if song? and song.play?
+        song.play()
+        increase_vol 0
       else
         elem =query "#like .good-song:first-child"
         if elem? then elem.click()

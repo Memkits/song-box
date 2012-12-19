@@ -43,6 +43,7 @@ play = function(name) {
   (tag('words')).innerText = name;
   song = new Audio(filename);
   song.play();
+  increase_vol(0);
   if (loop_it) {
     song.loop = true;
   }
@@ -180,7 +181,8 @@ window.onload = function() {
       return song.pause();
     } else {
       if ((song != null) && (song.play != null)) {
-        return song.play();
+        song.play();
+        return increase_vol(0);
       } else {
         elem = query("#like .good-song:first-child");
         if (elem != null) {
