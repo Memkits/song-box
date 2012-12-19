@@ -91,7 +91,7 @@ choose = function(name) {
   if (__indexOf.call(list, name) < 0) {
     json = {
       '.good-song': {
-        'span': name,
+        'span.name': name,
         'span.icon.up': 'up',
         'span.icon.rm': 'rm'
       }
@@ -212,6 +212,7 @@ window.onload = function() {
   return (tag("volume")).onmousewheel = function(wheel) {
     var num;
     num = wheel.wheelDelta / 120;
-    return increase_vol(num);
+    increase_vol(num);
+    return wheel.returnValue = false;
   };
 };

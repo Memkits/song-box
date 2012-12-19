@@ -60,7 +60,7 @@ choose = (name) ->
   unless name in list
     json =
       '.good-song':
-        'span': name
+        'span.name': name
         'span.icon.up': 'up'
         'span.icon.rm': 'rm'
     (tag 'like').insertAdjacentHTML 'beforeend', (tmpl json)
@@ -156,3 +156,4 @@ window.onload = ->
   (tag "volume").onmousewheel = (wheel) ->
     num = wheel.wheelDelta / 120
     increase_vol num
+    wheel.returnValue = no
