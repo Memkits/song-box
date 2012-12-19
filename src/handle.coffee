@@ -42,7 +42,7 @@ play = (name) ->
     unless (tag 'loop').className is 'pressed'
       elem  = query '#playing'
       next_elem = elem.nextElementSibling
-      log elem, next_elem
+      # log elem, next_elem
       if next_elem?
         next_elem.click()
       else
@@ -56,7 +56,7 @@ list_remove = (list_a, item_a) ->
   list_b
 
 choose = (name) ->
-  log 'name...', name, list
+  # log 'name...', name, list
   unless name in list
     json =
       '.good-song':
@@ -148,7 +148,7 @@ window.onload = ->
       (tag 'loop').className = 'pressed'
 
   document.body.onkeypress = (event) ->
-    log event.keyCode
+    # log event.keyCode
     if event.keyCode is 32
       (tag 'toggle').click()
       event.preventDefault()

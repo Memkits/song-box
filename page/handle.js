@@ -64,7 +64,6 @@ play = function(name) {
     if ((tag('loop')).className !== 'pressed') {
       elem = query('#playing');
       next_elem = elem.nextElementSibling;
-      log(elem, next_elem);
       if (next_elem != null) {
         return next_elem.click();
       } else {
@@ -87,7 +86,6 @@ list_remove = function(list_a, item_a) {
 
 choose = function(name) {
   var elem, json, parent, rm, up;
-  log('name...', name, list);
   if (__indexOf.call(list, name) < 0) {
     json = {
       '.good-song': {
@@ -203,7 +201,6 @@ window.onload = function() {
     }
   };
   document.body.onkeypress = function(event) {
-    log(event.keyCode);
     if (event.keyCode === 32) {
       (tag('toggle')).click();
       return event.preventDefault();
