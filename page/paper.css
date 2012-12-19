@@ -58,7 +58,7 @@ body {
   white-space: nowrap;
 }
 .song-name:hover {
-  color: #e6e6e6;
+  color: #808080;
 }
 #player {
   height: 100px;
@@ -72,9 +72,10 @@ body {
 }
 #step {
   padding: 2px 0px;
-  background: #f6f0ea;
+  background: #f0e6db;
   overflow-x: visible;
   height: 100%;
+  width: 0px;
   white-space: nowrap;
 }
 #words {
@@ -131,15 +132,17 @@ height
   white-space: nowrap;
 }
 .good-song:hover {
-  color: #e6e6e6;
+  color: #808080;
 }
 .good-song .icon {
   float: right;
   margin: 0px 6px;
-  color: #ccc;
+  color: #999;
+  opacity: 0.2;
 }
 .good-song .icon:hover {
-  color: #fff;
+  opacity: 1;
+  color: #808080;
 }
 #playing {
   color: #a3a3f5;
