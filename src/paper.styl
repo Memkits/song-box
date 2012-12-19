@@ -8,10 +8,10 @@
 
 ::-webkit-scrollbar-track
   width 4px
-  background hsl(0,90,95)
+  background hsla(0,50,80,0)
 
 ::-webkit-scrollbar-thumb
-  background hsl(0,50,80)
+  background hsl(0,90,95)
   border-radius 2px
 
 @font-face
@@ -27,12 +27,12 @@ body
   font-family chela
   font-size 20px
   color white
+  background-image url(../pic/bg.jpg)
 
 #full
-  width 1100px
+  width 800px
   height 100%
   margin 0px auto
-  background hsl(0,0,90)
   display -webkit-box
   -webkit-box-orient horizontal
 
@@ -44,20 +44,20 @@ body
 
 #menu
   padding 100px 0px 300px
-  background hsl(0,0,93)
 
 #my
   width 50%
   height 100%
 
 .song-name
-  background hsl(0,50,43)
   margin 4px 0px
   padding 4px 10px
-  box-shadow 0px 0px 10px hsl(0,0,80)
+  text-align right
+  cursor pointer
+  color hsl(0,0,70)
 
   &:hover
-    background hsl(0,50,60)
+    color hsl(0,0,90)
 
 #player
   height 100px
@@ -66,9 +66,8 @@ body
 
 #name
   height 30px
-  background hsl(240,15,60)
-  box-shadow 0px 0px 10px hsl(0,0,60)
   margin 10px 0px
+  box-shadow 0px 1px 0px hsl(0,0,80)
 
 #step
   padding 2px 0px
@@ -84,7 +83,6 @@ body
   padding 0px 10px
 
   span
-    background hsl(130,10,80)
     margin-right 10px
     padding 2px 8px
     display inline-block
@@ -95,12 +93,12 @@ body
     width 60px
 
   .pressed
-    background hsl(0,0,80)
+    color hsl(0,0,30)
 
   .released
-    background hsl(0,0,30)
+    color white
 
-  #now
+  #volume
     background hsla(0,0,0,0)
     color hsl(20,40,30)
     font-size 30px
@@ -111,14 +109,6 @@ body
     padding-right 0px
     width 40px
 
-  #volume
-    display inline-block
-
-    span
-      background hsl(0,0,60)
-      font-size 15px
-      width 40px
-
 #like
   min-height 300px
   height
@@ -126,23 +116,22 @@ body
   padding 50px 0px 150px
 
 .good-song
-  background hsl(240,30,60)
   height 30px
   padding 2px 10px
   margin 4px 0px
-  box-shadow 0px 0px 20px hsl(0,0,70)
+  cursor pointer
+  color hsl(0,0,70)
 
   &:hover
-    background hsl(240,50,70)
+    color hsl(0,0,90)
 
   .icon
     float right
     margin 0px 6px
     color hsl(0,0,80)
-    cursor pointer
 
     &:hover
       color white
 
 #playing
-  background hsl(240,80,80)
+  color hsl(240,80,80)

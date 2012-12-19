@@ -1,5 +1,5 @@
 
-show = (args...) -> console.log.apply console, args
+log = (args...) -> console.log.apply console, args
 
 song = {}
 list = []
@@ -24,11 +24,11 @@ play = (name) ->
 
   song.addEventListener 'loadedmetadata', ->
     # last_time = get 'time'
-    # show 'time', time
+    # log 'time', time
     # if last_time? then song.currentTime = Number (get 'time')
     song.addEventListener 'timeupdate', (a) ->
       # set 'time', (String song.currentTime)
-      # show (get 'time')
+      # log (get 'time')
       percent = song.currentTime / song.duration * 100
       (tag 'step').style.width = "#{percent}%"
 
@@ -42,7 +42,7 @@ play = (name) ->
     unless (tag 'loop').className is 'pressed'
       elem  = query '#playing'
       next_elem = elem.nextElementSibling
-      show elem, next_elem
+      log elem, next_elem
       if next_elem?
         next_elem.click()
       else
@@ -56,7 +56,7 @@ list_remove = (list_a, item_a) ->
   list_b
 
 choose = (name) ->
-  show 'name...', name, list
+  log 'name...', name, list
   unless name in list
     json =
       '.good-song':
@@ -91,12 +91,12 @@ choose = (name) ->
         elem.insertAdjacentElement 'afterend', prev
       event.cancelBubble = yes
 
-set_vol = (num) ->
-  vol = Number (tag 'now').innerText
+increase_vol = (num) ->
+  vol = Number (tag 'volume').innerText
   vol += num
   if vol < 0 then vol = 0
   else if vol > 100 then vol = 100
-  (tag 'now').innerText = vol
+  (tag 'volume').innerText = vol
   song.volume = vol / 100
   set 'vol', (String vol)
 
@@ -121,12 +121,12 @@ window.onload = ->
     if first? then first.click()
 
     last_vol = get 'vol'
-    # show 'last_vol', last_vol
+    # log 'last_vol', last_vol
     if last_vol?
       vol_str = Number last_vol
-      # show vol_str, 'vol'
-      (tag 'now').innerText = vol_str
-      set_vol +0
+      # log vol_str, 'vol'
+      (tag "volume").innerText = vol_str
+      increase_vol +0
 
   (tag 'toggle').onclick = ->
     if (tag 'toggle').className is 'pressed'
@@ -147,13 +147,12 @@ window.onload = ->
       loop_it = on
       (tag 'loop').className = 'pressed'
 
-  (tag 'dec81').onclick = -> set_vol -81
-  (tag 'inc27').onclick = -> set_vol +27
-  (tag 'dec9').onclick = -> set_vol -9
-  (tag 'inc3').onclick = -> set_vol +3
-
   document.body.onkeypress = (event) ->
-    show event.keyCode
+    log event.keyCode
     if event.keyCode is 32
       (tag 'toggle').click()
       event.preventDefault()
+
+  (tag "volume").onmousewheel = (wheel) ->
+    num = wheel.wheelDelta / 120
+    increase_vol num

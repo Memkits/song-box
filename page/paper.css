@@ -7,10 +7,10 @@
 }
 ::-webkit-scrollbar-track {
   width: 4px;
-  background: #fee7e7;
+  background: rgba(230,179,179,0);
 }
 ::-webkit-scrollbar-thumb {
-  background: #e6b3b3;
+  background: #fee7e7;
   border-radius: 2px;
 }
 @font-face {
@@ -26,12 +26,12 @@ body {
   font-family: chela;
   font-size: 20px;
   color: #fff;
+  background-image: url("../pic/bg.jpg");
 }
 #full {
-  width: 1100px;
+  width: 800px;
   height: 100%;
   margin: 0px auto;
-  background: #e6e6e6;
   display: -webkit-box;
   -webkit-box-orient: horizontal;
 }
@@ -44,20 +44,20 @@ body {
 }
 #menu {
   padding: 100px 0px 300px;
-  background: #ededed;
 }
 #my {
   width: 50%;
   height: 100%;
 }
 .song-name {
-  background: #a43737;
   margin: 4px 0px;
   padding: 4px 10px;
-  box-shadow: 0px 0px 10px #ccc;
+  text-align: right;
+  cursor: pointer;
+  color: #b3b3b3;
 }
 .song-name:hover {
-  background: #c66;
+  color: #e6e6e6;
 }
 #player {
   height: 100px;
@@ -66,9 +66,8 @@ body {
 }
 #name {
   height: 30px;
-  background: #8a8aa8;
-  box-shadow: 0px 0px 10px #999;
   margin: 10px 0px;
+  box-shadow: 0px 1px 0px #ccc;
 }
 #step {
   padding: 2px 0px;
@@ -84,7 +83,6 @@ body {
   padding: 0px 10px;
 }
 #control span {
-  background: #c7d1c9;
   margin-right: 10px;
   padding: 2px 8px;
   display: inline-block;
@@ -95,12 +93,12 @@ body {
   width: 60px;
 }
 #control .pressed {
-  background: #ccc;
+  color: #4d4d4d;
 }
 #control .released {
-  background: #4d4d4d;
+  color: #fff;
 }
-#control #now {
+#control #volume {
   background: rgba(0,0,0,0);
   color: #6b422e;
   font-size: 30px;
@@ -111,14 +109,6 @@ body {
   padding-right: 0px;
   width: 40px;
 }
-#control #volume {
-  display: inline-block;
-}
-#control #volume span {
-  background: #999;
-  font-size: 15px;
-  width: 40px;
-}
 #like {
   min-height: 300px;
 height
@@ -126,24 +116,23 @@ height
   padding: 50px 0px 150px;
 }
 .good-song {
-  background: #7a7ab8;
   height: 30px;
   padding: 2px 10px;
   margin: 4px 0px;
-  box-shadow: 0px 0px 20px #b3b3b3;
+  cursor: pointer;
+  color: #b3b3b3;
 }
 .good-song:hover {
-  background: #8c8cd9;
+  color: #e6e6e6;
 }
 .good-song .icon {
   float: right;
   margin: 0px 6px;
   color: #ccc;
-  cursor: pointer;
 }
 .good-song .icon:hover {
   color: #fff;
 }
 #playing {
-  background: #a3a3f5;
+  color: #a3a3f5;
 }
