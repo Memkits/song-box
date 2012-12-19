@@ -20,7 +20,6 @@ play = (name) ->
   (tag 'words').innerText = name
   song = new Audio filename
   song.play()
-  increase_vol 0
   if loop_it then song.loop = on
 
   song.addEventListener 'loadedmetadata', ->
@@ -48,6 +47,8 @@ play = (name) ->
         next_elem.click()
       else
         (tag 'like').children[0].click()
+        
+  check_vol()
 
 list_remove = (list_a, item_a) ->
   list_b = []
@@ -101,6 +102,15 @@ increase_vol = (num) ->
   song.volume = vol / 100
   set 'vol', (String vol)
 
+check_vol = ->
+    last_vol = get 'vol'
+    # log 'last_vol', last_vol
+    if last_vol?
+      vol_str = Number last_vol
+      # log vol_str, 'vol'
+      (tag "volume").innerText = vol_str
+      increase_vol +0
+
 window.onload = ->
 
   last_list = get 'list'
@@ -121,13 +131,7 @@ window.onload = ->
     first = (tag 'like').children[0]
     if first? then first.click()
 
-    last_vol = get 'vol'
-    # log 'last_vol', last_vol
-    if last_vol?
-      vol_str = Number last_vol
-      # log vol_str, 'vol'
-      (tag "volume").innerText = vol_str
-      increase_vol +0
+    check_vol()
 
   (tag 'toggle').onclick = ->
     if (tag 'toggle').className is 'pressed'
@@ -135,7 +139,6 @@ window.onload = ->
     else
       if song? and song.play?
         song.play()
-        increase_vol 0
       else
         elem =query "#like .good-song:first-child"
         if elem? then elem.click()
