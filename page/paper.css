@@ -55,6 +55,7 @@ body {
   text-align: right;
   cursor: pointer;
   color: #b3b3b3;
+  white-space: nowrap;
 }
 .song-name:hover {
   color: #e6e6e6;
@@ -68,7 +69,6 @@ body {
   height: 30px;
   margin: 10px 0px;
   box-shadow: 0px 1px 0px #ccc;
-  white-space: nowrap;
 }
 #step {
   padding: 2px 0px;
